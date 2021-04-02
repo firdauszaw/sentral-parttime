@@ -24,8 +24,11 @@ if(isset($_POST["save"])){
 
     //return back to the registration page if the email has already been used before
     if($rowcount > 0){
-        echo "Email has been registered as one of the users before!";
-    }else{
+        header("location:../signup.php?c=up"); 
+        exit();
+    }
+    else
+    {
         //cleaning the form data 
         $_username = mysqli_real_escape_string($conn, $username);
         $_firstname = mysqli_real_escape_string($conn, $firstname);
@@ -42,69 +45,72 @@ if(isset($_POST["save"])){
         $token = md5(rand().time());
 
         //password hashing
-        $passwordhash = password_hash($password, PASSWORD_BCRYPT);
+        $passwordhash = md5($password);
 
-        //checking the file upload
-        $file = rand(1000,100000)."-".$_FILES['file']['name'];
-        $temp_file_name = $_FILES['file']['tmp_name'];
-        $folder="../upload/";
-        //if the folder doesnt exit, create one
-        if(!is_dir($folder)) {
-            mkdir($folder);
-        }
-        $new_file_name = strtolower($file);
-        $file_location=str_replace(' ','-',$new_file_name);
-        //moving the picture into the folder that already has been created
-        if(move_uploaded_file($temp_file_name,$folder.$file_location))
-        {
-            //insert query
-            $query="INSERT INTO user(username, firstname, lastname, email, res_address, res_contact, mob_contact, dob, gender, password, token, profilepicture) 
-            VALUES ('$username', '$firstname','$lastname','$email','$res_address','$res_contact','$mob_contact','$dob', '$gender', '$passwordhash', '$token', '$file_location')";
-
-            // create mysql query
-            $sqlQuery = mysqli_query($conn, $query);
-                    
-            if(!$sqlQuery){
-                die("MySQL query failed!" . mysqli_error($conn));
-            } 
-            // Send verification email
-            if($sqlQuery) {
-                $msg = 'Click on the activation link to verify your email. <br><br>
-                  <a href="http://localhost/sentral/verification.php?token='.$token.'"> Click here to verify email</a>
-                ';
-
-                // Create the Transport
-                $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
-                ->setUsername('oneanotherno97@gmail.com')
-                ->setPassword('971215146149');
-
-                // Create the Mailer using your created Transport
-                $mailer = new Swift_Mailer($transport);
-
-                // Create a message
-                $message = (new Swift_Message('Please Verify Email Address!'))
-                ->setFrom([$email => $firstname . ' ' . $lastname])
-                ->setTo($email)
-                ->addPart($msg, "text/html")
-                ->setBody('Hello! User');
-
-                // Send the message
-                $result = $mailer->send($message);
-                  
-                if(!$result){
-                    $email_verify_err = '<div class="alert alert-danger">
-                            Verification email could not be sent!
-                    </div>';
-                } else {
-                    $email_verify_success = '<div class="alert alert-success">
-                        Verification email has been sent!
-                    </div>';
-                }
+        if($_FILES['file']['name'] != ""){
+            //checking the file upload
+            $file = rand(1000,100000)."-".$_FILES['file']['name'];
+            $temp_file_name = $_FILES['file']['tmp_name'];
+            $folder="../upload/";
+            //if the folder doesnt exit, create one
+            if(!is_dir($folder)) {
+                mkdir($folder);
             }
+            $new_file_name = strtolower($file);
+            $file_location=str_replace(' ','-',$new_file_name);
+            if(!move_uploaded_file($temp_file_name,$folder.$file_location)){
+                header("location:../signup.php?c=up"); 
+                exit();
+            }
+        }else{
+            $file_location = "user.jpg";
         }
-        else 
-        {
-            echo "There is a problem during registration. Please try again.(1)";
+
+        //insert query
+        $query="INSERT INTO user(username, firstname, lastname, email, res_address, res_contact, mob_contact, dob, gender, password, token, profilepicture) 
+        VALUES ('$username', '$firstname','$lastname','$email','$res_address','$res_contact','$mob_contact','$dob', '$gender', '$passwordhash', '$token', '$file_location')";
+
+        // create mysql query
+        $sqlQuery = mysqli_query($conn, $query);
+                
+        if(!$sqlQuery){
+            die("MySQL query failed!" . mysqli_error($conn));
+        } 
+        // Send verification email
+        if($sqlQuery) {
+            $msg = 'Click on the activation link to verify your email. <br><br>
+              <a href="http://localhost/sentral/sign-in.php?token='.$token.'"> Click here to verify email</a>
+            ';
+
+            // Create the Transport
+            $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
+            ->setUsername('oneanotherno97@gmail.com')
+            ->setPassword('971215146149');
+
+            // Create the Mailer using your created Transport
+            $mailer = new Swift_Mailer($transport);
+
+            // Create a message
+            $message = (new Swift_Message('Please Verify Email Address!'))
+            ->setFrom([$email => $firstname . ' ' . $lastname])
+            ->setTo($email)
+            ->addPart($msg, "text/html")
+            ->setBody('Hello! User');
+
+            // Send the message
+            $result = $mailer->send($message);
+              
+            if(!$result){
+                header("location:../signup.php?c=fr");  
+                exit();
+            } else {
+                header("location:../sign-in.php?c=sv"); 
+                exit();
+            }
+            
+        }else{
+            header("location:../signup.php?c=fr"); 
+            exit();
         }
         
     }

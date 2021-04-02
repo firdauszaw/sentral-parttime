@@ -47,7 +47,6 @@
               if(isset($_SESSION['username'])){
                 echo '<li class="b">Welcome: '.$_SESSION['username'].'</li>';
                 echo '<li style="float:right"><a href="./includes/logout.php"><i class="glyphicon glyphicon -log-out"></i>Log Out</a></li>';
-                echo '<li style="float:right"><a href="signup.php"><i class="glyphicon glyphicon-user"></i>My Account</a></li>';
               }
               else {
                 echo '<li style="float:right"><a href="sign-in.php"><i class="glyphicon glyphicon glyphicon-user"></i>Log In</a></li>';

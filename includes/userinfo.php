@@ -4,11 +4,13 @@ if (!isset($_SESSION["userid"])){
     header("location:./sign-in.php");
     exit();
 }else{
+    $errormessage = "session user id is ".$_SESSION["userid"];
     //querying the user data
     $sql = "SELECT * from user WHERE id = ".$_SESSION["userid"];
     $query = mysqli_query($conn, $sql) or die("database error:". mysqli_error($conn));
     $data = mysqli_fetch_assoc($query);
 
+    $id = $data['id'];
     $username = $data['username'];
     $firstname = $data['firstname'];
     $lastname = $data['lastname'];

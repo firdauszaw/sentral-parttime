@@ -1,6 +1,10 @@
 <!DOCTYPE html>
     <head>
         <?php include("includes/db_connection.php")?>
+        <?php if(!isset($_SESSION['userid'])){
+            header("location:sign-in.php"); 
+            exit();} 
+        ?>
     </head>
     <style>
         input[type=text], select {
@@ -49,26 +53,25 @@
             width: auto;
         }
     </style>
-    <script type="type/javascript">
-        function check_pass() {
-            if (document.getElementById('password').value ==
-                    document.getElementById('confirmpassword').value) {
-                document.getElementById('submit').disabled = false;
-            } else {
-                document.getElementById('submit').disabled = true;
-            }
-        }
-    </script>
     <body>
     <?php include("components/navbar.php")?>
     <?php include("includes/userinfo.php")?>
+    <?php include("includes/notification.php")?>
     <div class="container" id="main-content">
         <div class="container"> 
             <div class="row">
                 <h1>Edit User Information</h1>
             </div>
-            <form method="POST" action="includes/register.php" enctype="multipart/form-data" >
+            <div class="col-12 mb-5 text-center">
+                <center>
+                    <?php echo $notification; ?>
+                </center>
+            </div>
+            <center>
+            <form method="POST" action="includes/edituserinfo.php" enctype="multipart/form-data" style="width:50%;">
                 <div class="row">
+                    <!-- hidden input type to set the id of the user  -->
+                    <input id="userid" type="hidden" name="userid" value="<?php echo $id; ?>">
                     <div class="form-group">
                         <label for="form_fullname">Full Name :</label>
                         <input id="form_fullname" type="text" name="fullname" class="form-control" value="<?php echo $firstname . ' ' . $lastname; ?>" placeholder="<?php echo $firstname . ' ' . $lastname; ?>" readonly>
@@ -117,12 +120,12 @@
                     <div class="form-group">
                         <label for="password-area">The password are similar to the old one, any update done on the password field will be counted as editing current password</label><br>
                         <label for="password">New Password :</label>
-                        <input id="password" type="password" name="password" class="form-control" pattern="(?=.*\d)(?=.*[A-Z]).{6,}" placeholder="Please enter your new password" required="required" minlength="6" autofocus=""
+                        <input id="password" type="password" name="password" class="form-control" pattern="(?=.*\d)(?=.*[A-Z]).{6,}" placeholder="Please enter your new password"
                         title="6 characters minimum, must include 1 capital letter and 1 integer" onchange="check_pass();">
                     </div>
                     <div class="form-group">
                         <label for="password">Confirm New Password :</label>
-                        <input id="confirmpassword" type="password" name="confirmpassword" class="form-control" pattern="(?=.*\d)(?=.*[A-Z]).{6,}" placeholder="Please enter your new password" required="required" minlength="6" autofocus=""
+                        <input id="confirmpassword" type="password" name="confirmpassword" class="form-control" pattern="(?=.*\d)(?=.*[A-Z]).{6,}" placeholder="Please enter your new password" 
                         title="6 characters minimum, must include 1 capital letter and 1 integer" onchange="check_pass();">
                     </div>
                     <div class="form-group">
@@ -131,10 +134,11 @@
                         <input type="file" name="file">
                     </div>  
                     <div class="form-group">
-                        <input type="submit" name="save" id="right-label" value="Edit" style="background: #0078A0; border: none; color: #fff; font-family: 'Helvetica Neue', sans-serif; font-size: 1em; padding: 10px;">
+                        <input type="submit" name="submit" id="right-label" value="Edit" style="background: #0078A0; border: none; color: #fff; font-family: 'Helvetica Neue', sans-serif; font-size: 1em; padding: 10px;">
                     </div> 
                 </div>
             </form>
+            </center>
         </div>
     </div>
     </body>

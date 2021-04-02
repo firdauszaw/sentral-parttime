@@ -1,6 +1,10 @@
-b<!DOCTYPE html>
+<!DOCTYPE html>
     <head>
         <?php include("includes/db_connection.php")?>
+        <?php if(!isset($_SESSION['userid'])){
+            header("location:sign-in.php"); 
+            exit();} 
+        ?>
     </head>
     <style>
         input[type=text], select {

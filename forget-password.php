@@ -51,45 +51,26 @@
     </style>
     <body>
     <?php include("components/navbar.php")?>        
-    <?php include("includes/email-verifier.php")?>
     <?php include("includes/notification.php")?>
     <div class="container" id="main-content">
         <div class="container"> 
-            <div class="row">
-                <h1>Sign In</h1>
-            </div>
             <div class="col-12 mb-5 text-center">
                 <center>
-                    <?php echo $email_already_verified; ?>
-                    <?php echo $email_verified; ?>
-                    <?php echo $activation_error; ?>
                     <?php echo $notification; ?>
                 </center>
             </div>
-            <form method="POST" action="includes/login.php" enctype="multipart/form-data"><center>
+            <form method="POST" action="includes/forgotpassword.php" enctype="multipart/form-data"><center>
                 <div class="row" style="width: 50%;">
                     <div class="form-group">
+                        <label for="form_firstname">Please enter an email that has been associated with the account</label><br><br>
                         <label for="form_firstname">Email :</label>
-                        <input id="form_firstname" type="text" name="signinEmail" class="form-control" placeholder="Please enter your email" value="<?php if(isset($_COOKIE["rememberEmail"])) { echo $_COOKIE["rememberEmail"]; } ?>">
+                        <input id="form_firstname" type="text" name="email" class="form-control" placeholder="Please enter your email" value="<?php if(isset($_COOKIE["rememberEmail"])) { echo $_COOKIE["rememberEmail"]; } ?>">
                     </div>
                     <div class="form-group">
-                        <label for="password">Password :</label>
-                        <input id="password" type="password" name="signinPassword" class="form-control" placeholder="Please enter your password" value="<?php if(isset($_COOKIE["rememberPass"])) { echo $_COOKIE["rememberPass"]; } ?>">
-                    </div>
-                    <div class="form-group">
-                        <div><input type="checkbox" name="remember" id="remember" <?php if(isset($_COOKIE["remember"])) {  echo "checked";  } ?> />
-                        <label for="remember">Remember me</label></div>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" name="login" id="right-label" value="Login" style="background: #0078A0; border: none; color: #fff; font-family: 'Helvetica Neue', sans-serif; font-size: 1em; padding: 10px;">
+                        <input type="submit" name="forgot" id="right-label" value="Login" style="background: #0078A0; border: none; color: #fff; font-family: 'Helvetica Neue', sans-serif; font-size: 1em; padding: 10px;">
                     </div> 
                 </div></center>
             </form>
-            <div>
-                <center>
-                    <a href="forget-password.php"><button type="button">Forgot Password?</button></a>
-                </center>
-            </div>
         </div>
     </div>
     </body>

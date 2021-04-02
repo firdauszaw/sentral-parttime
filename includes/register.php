@@ -16,10 +16,16 @@ if(isset($_POST["save"])){
     $dob     = $_POST["dob"];
     $gender     = $_POST["gender"];
     $password      = $_POST["password"];
+    $confirmpassword      = $_POST["confirmpassword"];
 
+    //checking if the password and the confirm password are the same or not
+    if($password != $confirmpassword){
+        header("location:../signup.php?c=ns"); 
+        exit();
+    }
 
     //checking if the email has already registered before 
-    $checkquery = mysqli_query($conn, "SELECT * FROM user WHERE email = '{$email}'");
+    $checkquery = mysqli_query($conn, "SELECT * FROM temp_user WHERE email = '{$email}'");
     $rowcount = mysqli_num_rows($checkquery);
 
     //return back to the registration page if the email has already been used before
@@ -47,7 +53,15 @@ if(isset($_POST["save"])){
         //password hashing
         $passwordhash = md5($password);
 
+        //if the file exists
         if($_FILES['file']['name'] != ""){
+            //if file type isnt .jpg or .png, return to register
+            $file_type = $_FILES['image']['type']; //returns the mimetype
+            $allowed = array("image/jpeg", "image/png");
+            if(!in_array($file_type, $allowed)) {
+                header("location:../signup.php?c=ft"); 
+                exit();
+            }
             //checking the file upload
             $file = rand(1000,100000)."-".$_FILES['file']['name'];
             $temp_file_name = $_FILES['file']['tmp_name'];
@@ -67,7 +81,7 @@ if(isset($_POST["save"])){
         }
 
         //insert query
-        $query="INSERT INTO user(username, firstname, lastname, email, res_address, res_contact, mob_contact, dob, gender, password, token, profilepicture) 
+        $query="INSERT INTO temp_user(username, firstname, lastname, email, res_address, res_contact, mob_contact, dob, gender, password, token, profilepicture) 
         VALUES ('$username', '$firstname','$lastname','$email','$res_address','$res_contact','$mob_contact','$dob', '$gender', '$passwordhash', '$token', '$file_location')";
 
         // create mysql query
@@ -84,8 +98,8 @@ if(isset($_POST["save"])){
 
             // Create the Transport
             $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
-            ->setUsername('oneanotherno97@gmail.com')
-            ->setPassword('971215146149');
+            ->setUsername('sentralmail1@gmail.com')
+            ->setPassword('$entral99');
 
             // Create the Mailer using your created Transport
             $mailer = new Swift_Mailer($transport);
@@ -101,7 +115,7 @@ if(isset($_POST["save"])){
             $result = $mailer->send($message);
               
             if(!$result){
-                header("location:../signup.php?c=fr");  
+                header("location:../signup.php?c=es");  
                 exit();
             } else {
                 header("location:../sign-in.php?c=sv"); 

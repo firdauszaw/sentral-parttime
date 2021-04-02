@@ -78,12 +78,12 @@
                     <div class="form-group">
                         <label for="form_firstname">First Name :</label>
                         <input id="form_firstname" type="text" name="firstname" class="form-control" placeholder="Please enter your first name *" required="required" autofocus=""
-                        pattern="[a-zA-Z]+$" title="Only characters are accepted">
+                        pattern="[a-zA-Z ]+$" title="Only characters are accepted">
                     </div>
                     <div class="form-group">
                         <label for="form_lastname">Last Name :</label>
                         <input id="form_lastname" type="text" name="lastname" class="form-control" placeholder="Please enter your last name *" required="required" autofocus=""
-                        pattern="[a-zA-Z]+$" title="Only characters are accepted">
+                        pattern="[a-zA-Z ]+$" title="Only characters are accepted">
                     </div>
                     <div class="form-group">
                         <label for="form_username">Username :</label>

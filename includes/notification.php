@@ -15,7 +15,7 @@ if(!empty($_GET['c'])){
         $notification = "Successfully registered! Please check your email to verify.";
     }else if($code == "fr"){
         $notification = "Failed to register. Please try again.";
-    }else if($code == "fr"){
+    }else if($code == "es"){
         $notification = "There is a problem with email sender. Please try again with another email.";
     }else if($code == "up"){
         $notification = "Error uploading profile picture!. Please try again.";
@@ -31,6 +31,10 @@ if(!empty($_GET['c'])){
         $notification = "Profile successfully updated.";
     }else if($code == "ps"){
         $notification = "Password reset successfully! Please check your email for the new temporary password.";
+    }else if($code == "ns"){
+        $notification = "Password and confirm password does not match. Please try again.";
+    }else if($code == "ft"){
+        $notification = "Only .png and .jpg type files are allowed. Please try again.";
     }
 }
 ?>

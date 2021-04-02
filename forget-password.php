@@ -67,7 +67,7 @@
                         <input id="form_firstname" type="text" name="email" class="form-control" placeholder="Please enter your email" value="<?php if(isset($_COOKIE["rememberEmail"])) { echo $_COOKIE["rememberEmail"]; } ?>">
                     </div>
                     <div class="form-group">
-                        <input type="submit" name="forgot" id="right-label" value="Login" style="background: #0078A0; border: none; color: #fff; font-family: 'Helvetica Neue', sans-serif; font-size: 1em; padding: 10px;">
+                        <input type="submit" name="forgot" id="right-label" value="Send" style="background: #0078A0; border: none; color: #fff; font-family: 'Helvetica Neue', sans-serif; font-size: 1em; padding: 10px;">
                     </div> 
                 </div></center>
             </form>

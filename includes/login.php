@@ -6,7 +6,7 @@ $errorMessage = '';
 if(!empty($_POST["login"]) && $_POST["signinEmail"]!=''&& $_POST["signinPassword"]!='') {	
 	$email_signin = $_POST['signinEmail'];
 	$password_signin = $_POST['signinPassword'];
-	$sqlQuery = "SELECT * FROM user WHERE email='".$email_signin."' and is_active = '1'";
+	$sqlQuery = "SELECT * FROM user WHERE email='".$email_signin."'";
 	$resultSet = mysqli_query($conn, $sqlQuery) or die("database error:". mysqli_error($conn));
 	$isAccountExist = mysqli_num_rows($resultSet);	
 	if($isAccountExist == 1){

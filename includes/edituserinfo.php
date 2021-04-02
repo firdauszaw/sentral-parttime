@@ -23,12 +23,19 @@ if(isset($_POST["submit"])){
         exit();
     }else{
         if(isset($_POST["password"])){
-            $password = password_hash($_POST["password"], PASSWORD_BCRYPT);
+            $password = md5($_POST["password"]);
         }else{
             $password = $userData['password']; 
         }
     
         if($_FILES['file']['name'] != ""){
+            //if file type isnt .jpg or .png, return to register
+            $file_type = $_FILES['image']['type']; //returns the mimetype
+            $allowed = array("image/jpeg", "image/png");
+            if(!in_array($file_type, $allowed)) {
+                header("location:../user-information-edit.php?c=ft"); 
+                exit();
+            }
             //checking the file upload
             $file = rand(1000,100000)."-".$_FILES['file']['name'];
             $temp_file_name = $_FILES['file']['tmp_name'];
